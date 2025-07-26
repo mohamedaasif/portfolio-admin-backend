@@ -1,17 +1,18 @@
 const express = require("express");
-const mongoose = require("mongoose");
 require("dotenv").config();
+
+const connectDB = require("./src/config/db");
+const authRoutes = require("./src/routes/authRoutes");
 
 const app = express();
 
+app.use(express.json());
+app.use("/api/auth", authRoutes);
+
 const port = process.env.PORT;
 
-mongoose
-  .connect(process.env.DB_CONNECTION_URI)
-  .then(() => {
-    console.log("DB Connected!");
-    app.listen(port, () => {
-      console.log("Server running on port " + port);
-    });
-  })
-  .catch((err) => console.error("Connection Failed:", err.message));
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log("Server running on port " + port);
+  });
+});
