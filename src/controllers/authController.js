@@ -1,5 +1,5 @@
 const userService = require("../services/userService");
-const { hashPassword } = require("../utils/hash");
+const { hashPassword, verifyPassword } = require("../utils/hash");
 
 async function signup(req, res) {
   const { name, email, password } = req.body;
@@ -30,4 +30,25 @@ async function signup(req, res) {
   }
 }
 
-module.exports = { signup };
+async function signin(req, res) {
+  const { email, password } = req.body;
+
+  if (!email || !password)
+    return res.status(400).json({ error: "All fields are required" });
+  try {
+    const existingUser = await userService.findUserByEmail(email);
+    console.log("existingUser", existingUser);
+    if (!existingUser) return res.status(404).json({ error: "No user found" });
+    const passwordCheck = await verifyPassword(password, existingUser.password);
+    if (!passwordCheck)
+      return res.status(404).json({ error: "Incorrect Password" });
+    return res
+      .status(200)
+      .json({ message: "Signin successful", email: existingUser.email });
+  } catch {
+    console.error("Signin error:", err.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { signup, signin };

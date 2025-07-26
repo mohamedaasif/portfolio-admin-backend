@@ -5,4 +5,10 @@ async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
 }
 
-module.exports = { hashPassword };
+async function verifyPassword(inputPassword, storedPassword) {
+  const match = await bcrypt.compare(inputPassword, storedPassword);
+  if (match) return true;
+  else return false;
+}
+
+module.exports = { hashPassword, verifyPassword };
