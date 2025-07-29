@@ -7,10 +7,11 @@ const {
   updateProject,
   removeProject,
 } = require("../controllers/projectController");
+const auth = require("../middleware/auth");
 
-router.post("/create", createProject);
-router.get("/get", getAllProjects);
-router.put("/update", updateProject);
-router.delete("/delete/:postId", removeProject);
+router.post("/create", auth, createProject);
+router.get("/get", auth, getAllProjects);
+router.put("/update", auth, updateProject);
+router.delete("/delete/:postId", auth, removeProject);
 
 module.exports = router;
