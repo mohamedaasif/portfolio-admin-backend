@@ -52,9 +52,12 @@ async function signin(req, res) {
     };
     const token = await jwt.sign(responseData, secretKey, { expiresIn: "1h" });
 
-    return res
-      .status(200)
-      .json({ message: "Signin successful", authToken: token });
+    return res.status(200).json({
+      message: "Signin successful",
+      name: responseData?.name,
+      email: responseData?.emailId,
+      authToken: token,
+    });
   } catch {
     console.error("Signin error:", err.message);
     res.status(500).json({ error: "Internal server error" });
