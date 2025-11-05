@@ -54,8 +54,6 @@ async function signin(req, res) {
 
     return res.status(200).json({
       message: "Signin successful",
-      name: responseData?.name,
-      email: responseData?.emailId,
       authToken: token,
     });
   } catch {
