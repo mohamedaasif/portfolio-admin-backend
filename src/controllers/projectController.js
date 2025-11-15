@@ -28,6 +28,20 @@ async function getAllProjects(req, res) {
   }
 }
 
+async function getProjectByID(req, res) {
+  try {
+    const { postId } = req.params;
+    if (!postId)
+      return res.status(400).json({ error: "Missing postId field." });
+
+    const result = await projectService.findProject(postId);
+    if (!result) res.status(404).json({ message: "No Data found" });
+    res.status(200).json({ message: "Success", data: result });
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 async function updateProject(req, res) {
   try {
     const { postId, data } = req.body;
@@ -61,6 +75,7 @@ async function removeProject(req, res) {
 module.exports = {
   createProject,
   getAllProjects,
+  getProjectByID,
   updateProject,
   removeProject,
 };
