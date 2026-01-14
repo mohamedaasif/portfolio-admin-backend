@@ -6,9 +6,10 @@ async function createProject(req, res) {
     const data = {
       title,
       description,
-      technology,
+      technology: JSON.parse(technology),
       webLink,
       ghLink,
+      thumbnail: req.file ? req.file.path : null,
     };
     const result = await projectService.postProject(data);
     res.status(200).json({ message: "Success", postId: result.insertedId });

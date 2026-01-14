@@ -9,8 +9,9 @@ const {
   removeProject,
 } = require("../controllers/projectController");
 const auth = require("../middleware/auth");
+const upload = require("../middleware/multer");
 
-router.post("/create", auth, createProject);
+router.post("/create", auth, upload.single("thumbnail"), createProject);
 router.get("/get", auth, getAllProjects);
 router.get("/get/:postId", auth, getProjectByID);
 router.put("/update", auth, updateProject);

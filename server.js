@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 require("dotenv").config();
 
 const connectDB = require("./src/config/db");
@@ -7,6 +8,8 @@ const projectRoutes = require("./src/routes/projectRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 
 const app = express();
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
