@@ -48,7 +48,31 @@ async function getProjectByID(req, res) {
 
 async function updateProject(req, res) {
   try {
-    const { postId, data } = req.body;
+    const {
+      postId,
+      title,
+      description,
+      technology,
+      webLink,
+      ghLink,
+      workedAt,
+      year,
+    } = req.body;
+
+    const data = {
+      title,
+      description,
+      technology: JSON.parse(technology),
+      webLink,
+      ghLink,
+      workedAt,
+      year,
+    };
+    if (req?.file?.path) {
+      data.thumbnail = req.file.path;
+    }
+
+    console.log("data", data);
 
     if (!postId)
       return res.status(400).json({ error: "Missing postId field." });

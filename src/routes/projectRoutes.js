@@ -14,7 +14,7 @@ const upload = require("../middleware/multer");
 router.post("/create", auth, upload.single("thumbnail"), createProject);
 router.get("/get", auth, getAllProjects);
 router.get("/get/:postId", auth, getProjectByID);
-router.put("/update", auth, updateProject);
+router.put("/update", auth, upload.single("thumbnail"), updateProject);
 router.delete("/delete/:postId", auth, removeProject);
 
 module.exports = router;
