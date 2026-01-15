@@ -72,8 +72,6 @@ async function updateProject(req, res) {
       data.thumbnail = req.file.path;
     }
 
-    console.log("data", data);
-
     if (!postId)
       return res.status(400).json({ error: "Missing postId field." });
 
