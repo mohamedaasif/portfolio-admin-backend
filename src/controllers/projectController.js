@@ -1,7 +1,8 @@
 const projectService = require("../services/projectService");
 
 async function createProject(req, res) {
-  const { title, description, technology, webLink, ghLink } = req.body;
+  const { title, description, technology, webLink, ghLink, workedAt, year } =
+    req.body;
   try {
     const data = {
       title,
@@ -10,6 +11,8 @@ async function createProject(req, res) {
       webLink,
       ghLink,
       thumbnail: req.file ? req.file.path : null,
+      workedAt,
+      year,
     };
     const result = await projectService.postProject(data);
     res.status(200).json({ message: "Success", postId: result.insertedId });
