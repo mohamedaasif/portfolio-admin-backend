@@ -1,4 +1,5 @@
 const projectService = require("../services/projectService");
+const deleteFile = require("../utils/deleteFile");
 
 async function createProject(req, res) {
   const { title, description, technology, webLink, ghLink, workedAt, year } =
@@ -10,7 +11,7 @@ async function createProject(req, res) {
       technology: JSON.parse(technology),
       webLink,
       ghLink,
-      thumbnail: req.file ? req.file.path : null,
+      thumbnail: req.file ? req.file.filename : null,
       workedAt,
       year,
     };
@@ -68,12 +69,18 @@ async function updateProject(req, res) {
       workedAt,
       year,
     };
-    if (req?.file?.path) {
-      data.thumbnail = req.file.path;
+    if (req?.file?.filename) {
+      data.thumbnail = req.file.filename;
     }
 
     if (!postId)
       return res.status(400).json({ error: "Missing postId field." });
+
+    const projectDetails = await projectService.findProject(postId);
+
+    if (projectDetails?.thumbnail) {
+      deleteFile(projectDetails.thumbnail);
+    }
 
     const result = await projectService.putProject(postId, data);
     res.status(200).json({ message: "Success", data: result });
@@ -89,6 +96,12 @@ async function removeProject(req, res) {
 
     if (!postId)
       return res.status(400).json({ error: "Missing postId field." });
+
+    const projectDetails = await projectService.findProject(postId);
+
+    if (projectDetails?.thumbnail) {
+      deleteFile(projectDetails.thumbnail);
+    }
 
     const result = await projectService.deleteProject(postId);
     res.status(200).json({ message: "Success" });
