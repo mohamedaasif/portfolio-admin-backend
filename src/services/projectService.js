@@ -22,6 +22,13 @@ async function findAllProjects() {
   return await db.collection("projects").find().toArray();
 }
 
+async function findProject(postId) {
+  const db = getDB();
+  return await db
+    .collection("projects")
+    .findOne({ _id: new ObjectId(String(postId)) });
+}
+
 async function deleteProject(postId) {
   const db = getDB();
   return await db
@@ -29,4 +36,10 @@ async function deleteProject(postId) {
     .deleteOne({ _id: new ObjectId(String(postId)) });
 }
 
-module.exports = { postProject, findAllProjects, putProject, deleteProject };
+module.exports = {
+  postProject,
+  findAllProjects,
+  findProject,
+  putProject,
+  deleteProject,
+};
