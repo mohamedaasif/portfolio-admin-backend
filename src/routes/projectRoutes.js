@@ -8,13 +8,12 @@ const {
   updateProject,
   removeProject,
 } = require("../controllers/projectController");
-const auth = require("../middleware/auth");
 const upload = require("../middleware/multer");
 
-router.post("/create", auth, upload.single("thumbnail"), createProject);
-router.get("/get", auth, getAllProjects);
-router.get("/get/:postId", auth, getProjectByID);
-router.put("/update", auth, upload.single("thumbnail"), updateProject);
-router.delete("/delete/:postId", auth, removeProject);
+router.post("/create", upload.single("thumbnail"), createProject);
+router.get("/get", getAllProjects);
+router.get("/get/:postId", getProjectByID);
+router.put("/update", upload.single("thumbnail"), updateProject);
+router.delete("/delete/:postId", removeProject);
 
 module.exports = router;

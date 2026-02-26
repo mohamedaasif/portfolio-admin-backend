@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 require("dotenv").config();
 
+const auth = require("./src/middleware/auth");
+
 const connectDB = require("./src/config/db");
 const authRoutes = require("./src/routes/authRoutes");
 const projectRoutes = require("./src/routes/projectRoutes");
@@ -13,8 +15,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
-app.use("/api/project", projectRoutes);
-app.use("/api/userDetails", userRoutes);
+app.use("/api/project", auth, projectRoutes);
+app.use("/api/userDetails", auth, userRoutes);
 
 const port = process.env.PORT;
 
