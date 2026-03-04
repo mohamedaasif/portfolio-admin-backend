@@ -13,7 +13,7 @@ async function putProject(postId, data) {
     .findOneAndUpdate(
       { _id: new ObjectId(String(postId)) },
       { $set: data },
-      { returnDocument: "after" }
+      { returnDocument: "after" },
     );
 }
 

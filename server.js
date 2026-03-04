@@ -13,7 +13,10 @@ const app = express();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// middleware
 app.use(express.json());
+
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/project", auth, projectRoutes);
 app.use("/api/userDetails", auth, userRoutes);
