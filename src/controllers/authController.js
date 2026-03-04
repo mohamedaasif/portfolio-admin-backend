@@ -1,14 +1,18 @@
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
 const { hashPassword, verifyPassword } = require("../utils/hash");
+const { validateUserRole } = require("../utils/validation");
 
 const secretKey = process.env.SECRET_KEY;
 
 async function signup(req, res) {
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password, gender, dob, role } = req.body;
 
-  if (!name || !email || !password)
+  if (!firstName || !lastName || !email || !password || !role)
     return res.status(400).json({ error: "All fields are required" });
+
+  if (!validateUserRole(role))
+    return res.status(400).json({ error: "Invalid user role" });
 
   try {
     const existingUser = await userService.findUserByEmail(email);
@@ -17,16 +21,19 @@ async function signup(req, res) {
 
     const hashedPassword = await hashPassword(password);
     const user = {
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
+      gender,
+      dob,
+      role,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
-    const result = await userService.createUser(user);
-    res
-      .status(201)
-      .json({ message: "Signup successful", userId: result.insertedId });
+    await userService.createUser(user);
+    res.status(201).json({ message: "Account created successfully" });
   } catch (err) {
     console.error("Signup error:", err.message);
     res.status(500).json({ error: "Internal server error" });
@@ -47,10 +54,12 @@ async function signin(req, res) {
 
     const responseData = {
       id: existingUser._id.toString(),
-      name: existingUser.name,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
       emailId: existingUser.email,
+      role: existingUser.role,
     };
-    const token = await jwt.sign(responseData, secretKey, { expiresIn: "1h" });
+    const token = await jwt.sign(responseData, secretKey, { expiresIn: "6h" });
 
     return res.status(200).json({
       message: "Signin successful",

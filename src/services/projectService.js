@@ -6,14 +6,14 @@ async function postProject(data) {
   return await db.collection("projects").insertOne(data);
 }
 
-async function putProject(postId, data) {
+async function putProject(projectId, data) {
   const db = getDB();
   return await db
     .collection("projects")
     .findOneAndUpdate(
-      { _id: new ObjectId(String(postId)) },
+      { _id: new ObjectId(String(projectId)) },
       { $set: data },
-      { returnDocument: "after" }
+      { returnDocument: "after" },
     );
 }
 
@@ -22,18 +22,18 @@ async function findAllProjects() {
   return await db.collection("projects").find().toArray();
 }
 
-async function findProject(postId) {
+async function findProject(projectId) {
   const db = getDB();
   return await db
     .collection("projects")
-    .findOne({ _id: new ObjectId(String(postId)) });
+    .findOne({ _id: new ObjectId(String(projectId)) });
 }
 
-async function deleteProject(postId) {
+async function deleteProject(projectId) {
   const db = getDB();
   return await db
     .collection("projects")
-    .deleteOne({ _id: new ObjectId(String(postId)) });
+    .deleteOne({ _id: new ObjectId(String(projectId)) });
 }
 
 module.exports = {
