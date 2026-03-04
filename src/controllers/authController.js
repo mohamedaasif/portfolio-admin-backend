@@ -1,14 +1,18 @@
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
 const { hashPassword, verifyPassword } = require("../utils/hash");
+const { validateUserRole } = require("../utils/validation");
 
 const secretKey = process.env.SECRET_KEY;
 
 async function signup(req, res) {
-  const { firstName, lastName, email, password, gender, dob } = req.body;
+  const { firstName, lastName, email, password, gender, dob, role } = req.body;
 
-  if (!firstName || !lastName || !email || !password)
+  if (!firstName || !lastName || !email || !password || !role)
     return res.status(400).json({ error: "All fields are required" });
+
+  if (!validateUserRole(role))
+    return res.status(400).json({ error: "Invalid user role" });
 
   try {
     const existingUser = await userService.findUserByEmail(email);
@@ -23,6 +27,7 @@ async function signup(req, res) {
       password: hashedPassword,
       gender,
       dob,
+      role,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
