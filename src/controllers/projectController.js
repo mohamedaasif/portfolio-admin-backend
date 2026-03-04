@@ -2,15 +2,22 @@ const projectService = require("../services/projectService");
 const deleteFile = require("../utils/deleteFile");
 
 async function createProject(req, res) {
-  const { title, description, technology, webLink, ghLink, workedAt, year } =
-    req.body;
+  const {
+    title,
+    description,
+    technology,
+    websiteURL,
+    githubURL,
+    workedAt,
+    year,
+  } = req.body;
   try {
     const data = {
       title,
       description,
       technology: JSON.parse(technology),
-      webLink,
-      ghLink,
+      websiteURL,
+      githubURL,
       thumbnail: req.file ? req.file.filename : null,
       workedAt,
       year,
@@ -54,8 +61,8 @@ async function updateProject(req, res) {
       title,
       description,
       technology,
-      webLink,
-      ghLink,
+      websiteURL,
+      githubURL,
       workedAt,
       year,
     } = req.body;
@@ -64,8 +71,8 @@ async function updateProject(req, res) {
       title,
       description,
       technology: JSON.parse(technology),
-      webLink,
-      ghLink,
+      websiteURL,
+      githubURL,
       workedAt,
       year,
     };
