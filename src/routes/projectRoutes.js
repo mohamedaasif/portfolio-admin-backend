@@ -12,8 +12,8 @@ const upload = require("../middleware/multer");
 
 router.post("/create", upload.single("thumbnail"), createProject);
 router.get("/get", getAllProjects);
-router.get("/get/:postId", getProjectByID);
+router.get("/get/:projectId", getProjectByID);
 router.put("/update", upload.single("thumbnail"), updateProject);
-router.delete("/delete/:postId", removeProject);
+router.delete("/delete/:projectId", removeProject);
 
 module.exports = router;
