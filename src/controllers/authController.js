@@ -54,8 +54,10 @@ async function signin(req, res) {
 
     const responseData = {
       id: existingUser._id.toString(),
-      name: existingUser.name,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
       emailId: existingUser.email,
+      role: existingUser.role,
     };
     const token = await jwt.sign(responseData, secretKey, { expiresIn: "6h" });
 
