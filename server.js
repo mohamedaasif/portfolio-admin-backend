@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 
@@ -15,6 +16,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
 
 // API Routes
 app.use("/api/auth", authRoutes);
