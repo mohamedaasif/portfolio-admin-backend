@@ -56,8 +56,8 @@ async function getProjectByID(req, res) {
 
 async function updateProject(req, res) {
   try {
+    const { projectId } = req.params;
     const {
-      projectId,
       title,
       description,
       technology,
